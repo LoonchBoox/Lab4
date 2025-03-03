@@ -1,10 +1,11 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class FullSpell(BaseModel):
     index: str
     name: str
-    desc: str
-    higher_level: str
+    desc: list[str]
+    higher_level: list[str]
     range: str
     concentration: bool
     casting_time: str

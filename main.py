@@ -32,10 +32,11 @@ def getValidateResultFullSpell(append):
             return FullSpell(**data)
 
         except ValidationError:
-            print("error")
+            print("validation error")
             exit()
     else:
-        print("error")
+        print(" status bad error")
+        print(result.status_code)
         exit()
 
 allspells = getValidateResultAllSpells()
@@ -55,7 +56,7 @@ while (option != "4"):
             if (spell.name == desiredSpell):
                 desiredSpellIndex = spell.index
         print(desiredSpellIndex)
-        retrievedSpell = getValidateResultFullSpell(desiredSpellIndex)
+        retrievedSpell:FullSpell = getValidateResultFullSpell(desiredSpellIndex)
         print(retrievedSpell.__repr__())
 
             
