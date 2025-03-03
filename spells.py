@@ -1,7 +1,16 @@
 from pydantic import BaseModel
 
 class FullSpell(BaseModel):
+    index: str
     name: str
+    desc: str
+    higher_level: str
+    range: str
+    concentration: bool
+    casting_time: str
+
+    def __repr__(self):
+        return f"{self.name}\n{self.desc}\n{self.higher_level}\nrange:{self.range}\nconcentration:{self.concentration}\ncasting time:{self.casting_time}"
 
 class SmallSpell(BaseModel):
     index: str
@@ -10,7 +19,6 @@ class SmallSpell(BaseModel):
     url: str
 
     def __repr__(self):
-
         return f"{self.name} - level {self.level}"
     
 class AllSpells(BaseModel):
