@@ -9,9 +9,13 @@ class FullSpell(BaseModel):
     range: str
     concentration: bool
     casting_time: str
+    level: int
 
     def __repr__(self):
         return f"{self.name}\n{self.desc}\n{self.higher_level}\nrange:{self.range}\nconcentration:{self.concentration}\ncasting time:{self.casting_time}"
+    
+    def printBasic(self):
+        return f"{self.name} - {self.level}"
 
 class SmallSpell(BaseModel):
     index: str
