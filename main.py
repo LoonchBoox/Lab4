@@ -10,7 +10,7 @@ base_api_url = "https://www.dnd5eapi.co/api/2014/spells/"
 
 def addSpelltoList(spellIndex):
     spellList = open(spellListPath,"a")
-    spellList.writelines(spellIndex)
+    spellList.write(f"\n{spellIndex}")
     spellList.close()
 
 def removeSpellfromList(spellIndex):
@@ -44,16 +44,10 @@ def getValidateResultFullSpell(append):
 
     if result.status_code == 200: # everything is ok :)
         data = result.json()
-        try:
-            return FullSpell(**data)
-
-        except ValidationError:
-            print("validation error")
-            exit()
+        return FullSpell(**data)
     else:
         print(" status bad error")
         print(result.status_code)
-        exit()
 
 allspells = getValidateResultAllSpells()
 option = ""
@@ -61,14 +55,23 @@ while (option != "4"):
     print("D&D spells list!\n [1] View/Edit List\n [2] Search Spells\n [3] View Spell\n [4] Exit")
     option = input()
     if (option == "1"):
-        spellListfile = open(spellListPath,"r")
-        listSpellsList = spellListfile.readlines()
-        spellListfile.close()
-        spellnumbering = 0
-        for spell in listSpellsList:
-            spellnumbering += 1
-            print(f" [{spellnumbering}] {getValidateResultFullSpell(spell.strip()).printBasic()}")
-
+        while (option != "exit"):
+            spellListfile = open(spellListPath,"r")
+            listSpellsList = spellListfile.readlines()
+            spellListfile.close()
+            print("Type the number of the spell you would like to view\nor type exit to go back...")
+            spellnumbering = 0
+            for spell in listSpellsList:
+                spellnumbering += 1
+                print(f" [{spellnumbering}] {getValidateResultFullSpell(spell.strip()).printBasic()}")
+            option = input()
+            try:
+                print(getValidateResultFullSpell(listSpellsList[int(option)-1].strip()).__repr__())
+                remove = input("\nto remove this spell from the list, type remove\n otherwise, press enter\n")
+                if (remove == "remove"):
+                    removeSpellfromList(listSpellsList[int(option)-1])
+            except:
+              print()
     if (option == "2"):
         desiredLevel = input("Please select a spell level(0 to 9):")
         for spell in allspells.results:
@@ -80,9 +83,12 @@ while (option != "4"):
         for spell in allspells.results:
             if (spell.name == desiredSpell):
                 desiredSpellIndex = spell.index
-        retrievedSpell:FullSpell = getValidateResultFullSpell(desiredSpellIndex)
-        print(retrievedSpell.__repr__())
-        wantaddspell = input("Would you like to add this spell to your list?(yes or no)")
-        if (wantaddspell == "yes" or wantaddspell == "y"):
-            addSpelltoList(desiredSpellIndex)
-        
+        try:
+            retrievedSpell = getValidateResultFullSpell(desiredSpellIndex)
+        except:
+            print("Invalid Spell Name")
+        else:
+            print(retrievedSpell.__repr__())
+            wantaddspell = input("\nWould you like to add this spell to your list?(yes or no)")
+            if (wantaddspell == "yes" or wantaddspell == "y"):
+                addSpelltoList(desiredSpellIndex)

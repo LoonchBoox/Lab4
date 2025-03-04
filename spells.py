@@ -15,7 +15,7 @@ class FullSpell(BaseModel):
         return f"{self.name}\n{self.desc}\n{self.higher_level}\nrange:{self.range}\nconcentration:{self.concentration}\ncasting time:{self.casting_time}"
     
     def printBasic(self):
-        return f"{self.name} - {self.level}"
+        return f"{self.name} - lvl.{self.level}"
 
 class SmallSpell(BaseModel):
     index: str
